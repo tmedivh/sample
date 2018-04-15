@@ -8,7 +8,7 @@ allprojects {
 
 buildscript {
     ext {
-        springBootVersion = '1.5.13.BUILD-SNAPSHOT'
+        springBootVersion = '1.5.12.RELEASE'
     }
     repositories {
         mavenCentral()
@@ -28,7 +28,7 @@ subprojects {
         mavenCentral()
     }
     dependencies {
-        compile('org.springframework.boot:spring-boot-starter-web')
+        compile("org.springframework.boot:spring-boot-starter-web:1.5.12.RELEASE")
     }
 }
 
