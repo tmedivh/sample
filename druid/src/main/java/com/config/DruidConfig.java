@@ -1,10 +1,10 @@
 package com.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
-import org.springframework.boot.bind.RelaxedPropertyResolver;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.core.env.Environment;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -21,30 +21,32 @@ import java.sql.SQLException;
 @Configuration
 @EnableTransactionManagement
 public class DruidConfig implements EnvironmentAware {
-    private RelaxedPropertyResolver propertyResolver;
+
+    private Environment environment;
 
     @Override
-    public void setEnvironment(Environment env) {
-        this.propertyResolver = new RelaxedPropertyResolver(env, "spring.datasource.");
+    public void setEnvironment(final Environment environment) {
+        this.environment = environment;
     }
-
-    @Bean
-    public DataSource dataSource() {
-        DruidDataSource datasource = new DruidDataSource();
-        datasource.setUrl(propertyResolver.getProperty("url"));
-        datasource.setDriverClassName(propertyResolver.getProperty("driver-class-name"));
-        datasource.setUsername(propertyResolver.getProperty("username"));
-        datasource.setPassword(propertyResolver.getProperty("password"));
-        datasource.setMinIdle(Integer.valueOf(propertyResolver.getProperty("minIdle")));
-        datasource.setMaxWait(Long.valueOf(propertyResolver.getProperty("maxWait")));
-        datasource.setMaxActive(Integer.valueOf(propertyResolver.getProperty("maxActive")));
-        datasource.setMinEvictableIdleTimeMillis(
-                Long.parseLong(propertyResolver.getProperty("druid.minEvictableIdleTimeMillis")));
-        try {
-            datasource.setFilters(propertyResolver.getProperty("druid.filters"));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return datasource;
-    }
+//
+//    @Bean
+//    @Primary
+//    public DataSource dataSource() {
+//        DruidDataSource datasource = new DruidDataSource();
+//        datasource.setUrl(environment.getProperty("url"));
+//        datasource.setDriverClassName(environment.getProperty("spring.datasource.driverClassName"));
+//        datasource.setUsername(environment.getProperty("spring.datasource.username"));
+//        datasource.setPassword(environment.getProperty("spring.datasource.password"));
+//        datasource.setMinIdle(Integer.parseInt(environment.getProperty("spring.datasource.minIdle")));
+//        datasource.setMaxWait(Long.parseLong(environment.getProperty("spring.datasource.maxWait")));
+//        datasource.setMaxActive(Integer.valueOf(environment.getProperty("spring.datasource.maxActive")));
+//        datasource.setMinEvictableIdleTimeMillis(
+//                Long.parseLong(environment.getProperty("spring.datasource.druid.minEvictableIdleTimeMillis")));
+//        try {
+//            datasource.setFilters(environment.getProperty("spring.datasource.druid.filters"));
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//        return datasource;
+//    }
 }
