@@ -1,0 +1,6 @@
+rootProject.name = 'sample'
+include 'druid'
+include 'druid'
+rootProject.name = 'sample'
+rootProject.name = 'sample'
+
