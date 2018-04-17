@@ -28,25 +28,27 @@ public class DruidConfig implements EnvironmentAware {
     public void setEnvironment(final Environment environment) {
         this.environment = environment;
     }
-//
-//    @Bean
-//    @Primary
-//    public DataSource dataSource() {
-//        DruidDataSource datasource = new DruidDataSource();
-//        datasource.setUrl(environment.getProperty("url"));
-//        datasource.setDriverClassName(environment.getProperty("spring.datasource.driverClassName"));
-//        datasource.setUsername(environment.getProperty("spring.datasource.username"));
-//        datasource.setPassword(environment.getProperty("spring.datasource.password"));
-//        datasource.setMinIdle(Integer.parseInt(environment.getProperty("spring.datasource.minIdle")));
-//        datasource.setMaxWait(Long.parseLong(environment.getProperty("spring.datasource.maxWait")));
-//        datasource.setMaxActive(Integer.valueOf(environment.getProperty("spring.datasource.maxActive")));
-//        datasource.setMinEvictableIdleTimeMillis(
-//                Long.parseLong(environment.getProperty("spring.datasource.druid.minEvictableIdleTimeMillis")));
-//        try {
-//            datasource.setFilters(environment.getProperty("spring.datasource.druid.filters"));
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        return datasource;
-//    }
+
+    @Bean
+    @Primary
+    public DataSource dataSource() {
+        DruidDataSource datasource = new DruidDataSource();
+        datasource.setUrl(environment.getProperty("spring.datasource.url"));
+        datasource.setDriverClassName(environment.getProperty("spring.datasource.driverClassName"));
+        datasource.setUsername(environment.getProperty("spring.datasource.username"));
+        datasource.setPassword(environment.getProperty("spring.datasource.password"));
+        datasource.setMinIdle(Integer.parseInt(environment.getProperty("spring.datasource.minIdle")));
+        datasource.setMaxWait(Long.parseLong(environment.getProperty("spring.datasource.maxWait")));
+        datasource.setMaxActive(Integer.valueOf(environment.getProperty("spring.datasource.maxActive")));
+        datasource.setMinEvictableIdleTimeMillis(
+                Long.parseLong(environment.getProperty("spring.datasource.druid.minEvictableIdleTimeMillis")));
+
+        try {
+            datasource.setFilters(environment.getProperty("spring.datasource.druid.filters"));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return datasource;
+    }
 }
