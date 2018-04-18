@@ -19,7 +19,7 @@ import java.sql.SQLException;
  */
 
 @Configuration
-@EnableTransactionManagement
+@EnableTransactionManagement  // 启注解事务管理，等同于xml配置方式的 <tx:annotation-driven />
 public class DruidConfig implements EnvironmentAware {
 
     private Environment environment;
