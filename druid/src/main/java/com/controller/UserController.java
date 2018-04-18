@@ -26,7 +26,7 @@ public class UserController {
 
     @GetMapping
     public Object test() {
-        PageHelper.startPage(15, 1);
+        PageHelper.startPage(1, 15);
         return new PageInfo<>(userInfoMapper.selectAll());
     }
 

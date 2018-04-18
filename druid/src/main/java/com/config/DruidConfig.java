@@ -1,6 +1,7 @@
 package com.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,6 +21,7 @@ import java.sql.SQLException;
 
 @Configuration
 @EnableTransactionManagement  // 启注解事务管理，等同于xml配置方式的 <tx:annotation-driven />
+@MapperScan(basePackages = {"com.mapper"})
 public class DruidConfig implements EnvironmentAware {
 
     private Environment environment;
