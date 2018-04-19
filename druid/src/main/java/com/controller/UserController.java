@@ -1,5 +1,6 @@
 package com.controller;
 
+import com.annotation.Log;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.mapper.UserInfoMapper;
@@ -25,9 +26,11 @@ public class UserController {
     private UserInfoMapper userInfoMapper;
 
     @GetMapping
+    @Log
     public Object test() {
         PageHelper.startPage(1, 15);
-        return new PageInfo<>(userInfoMapper.selectAll());
+        throw new RuntimeException("12312");
+        //return new PageInfo<>(userInfoMapper.selectAll());
     }
 
     @PutMapping
