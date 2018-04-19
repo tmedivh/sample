@@ -17,6 +17,10 @@ public class LogAspect {
 
     //获取log主键标示,用于更新日志结果
     private String logId;
+    //方法名
+    private String methodName;
+    //类名
+    private String className;
 
     @Pointcut("@annotation(com.annotation.Log)")
     public void logPointCut() {
@@ -29,34 +33,28 @@ public class LogAspect {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         //获取请求方法名和类名
         logId = UUID.randomUUID().toString().replace("-", "");
-        String className = joinPoint.getTarget().getClass().getName();
-        String methodName = signature.getName();
+        //获取类名
+        className = joinPoint.getTarget().getClass().getName();
+        //获取方法名
+        methodName = signature.getName();
         System.out.println("=========请求前======" + className + "======" + methodName);
         System.out.println("=========当前uuid======" + logId);
     }
 
-    /* 接口执行成功后通知 */
+    /* 接口执行成功后获取返回结果 */
     @AfterReturning(value = "logPointCut()", returning = "rvt")
     public void doAfterReturning(JoinPoint joinPoint, Object rvt) {
-        MethodSignature signature = (MethodSignature) joinPoint.getSignature();
-        //获取请求方法名和类名
-        String methodName = signature.getName();
-        String className = joinPoint.getTarget().getClass().getName();
         System.out.println("=========执行成功后======" + className + "======" + methodName);
         System.out.println("=========当前uuid======" + logId);
         System.out.println("=========当前uuid======" + JSON.toJSONString(rvt));
 
     }
 
-    /* 接口抛出异常后 */
+    /* 接口抛出异常后获取异常信息 */
     @AfterThrowing(pointcut = "logPointCut()", throwing = "e")
     public void doAfterThrowing(JoinPoint joinPoint, Throwable e) {
-        MethodSignature signature = (MethodSignature) joinPoint.getSignature();
-        //获取请求方法名和类名
-        String className = joinPoint.getTarget().getClass().getName();
-        String methodName = signature.getName();
         System.out.println("=========执行失败后======" + className + "======" + methodName);
         System.out.println("=========当前uuid======" + logId);
-        System.out.println("=========当前uuid======" + e.getMessage());
+        System.out.println("=========异常信息======" + e.getMessage());
     }
 }

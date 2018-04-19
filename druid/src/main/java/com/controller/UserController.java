@@ -33,8 +33,9 @@ public class UserController {
         //return new PageInfo<>(userInfoMapper.selectAll());
     }
 
-    @PutMapping
+    @PutMapping("/update")
     @Transactional
+    @Log
     public Object update() {
         UserInfo userInfo = new UserInfo();
         userInfo.setId(1);
