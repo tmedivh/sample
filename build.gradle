@@ -2,13 +2,12 @@ allprojects {
     group 'com.sample'
     version '1.0-SNAPSHOT'
     apply plugin: 'java'
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
+    apply plugin: 'org.springframework.boot'
 }
 
 buildscript {
     ext {
-        springBootVersion = '1.5.12.RELEASE'
+        springBootVersion = '1.5.9.RELEASE'
     }
     repositories {
         mavenCentral()
@@ -19,6 +18,9 @@ buildscript {
 }
 
 subprojects {
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
     tasks.withType(JavaCompile) {
         options.encoding = 'UTF-8'
     }
@@ -26,7 +28,7 @@ subprojects {
         mavenCentral()
     }
     dependencies {
-        compile("org.springframework.boot:spring-boot-starter-web:1.5.12.RELEASE")
+        compile("org.springframework.boot:spring-boot-starter-web:1.5.9.RELEASE")
 
         //以下是database的设置
         // https://mvnrepository.com/artifact/com.alibaba/druid

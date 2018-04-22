@@ -3,6 +3,7 @@ package com.utils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -29,5 +30,14 @@ public class HttpSessionUtil {
      */
     public static HttpSession getHttpSession() {
         return servletRequestAttributes.getRequest().getSession();
+    }
+
+    /**
+     * 获取当前请求的session
+     *
+     * @return
+     */
+    public static HttpServletRequest getHttpRequest() {
+        return servletRequestAttributes.getRequest();
     }
 }
