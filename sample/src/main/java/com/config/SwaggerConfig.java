@@ -44,7 +44,7 @@ public class SwaggerConfig {
                 .enable(environment.getProperty("swagger.enable", Boolean.class))
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("wzdai.api.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.controller"))
                 .paths(PathSelectors.any())
                 .build().globalOperationParameters(pars);
     }

@@ -1,6 +1,8 @@
 package com.service;
 
 import com.exception.ShiroException;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.mapper.UserInfoMapper;
 import com.model.UserInfo;
 import com.vo.UserVO;
@@ -40,5 +42,21 @@ public class UserService {
         userVO.setName(userInfos.get(0).getName());
         userVO.setPass(userInfos.get(0).getPassword());
         return userVO;
+    }
+
+    /**
+     * 用户列表
+     *
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    public PageInfo<UserInfo> getUserList(Integer pageNum, Integer pageSize) {
+        Example example = new Example(UserInfo.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("name");
+        PageHelper.startPage(pageNum, pageSize);
+        List<UserInfo> users = userInfoMapper.selectByExample(example);
+        return new PageInfo<>(users);
     }
 }
