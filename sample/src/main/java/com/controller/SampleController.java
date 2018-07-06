@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/")
-public class UserController {
+public class SampleController {
 
     @Autowired
     private UserInfoMapper userInfoMapper;
