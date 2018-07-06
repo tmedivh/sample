@@ -41,6 +41,9 @@ subprojects {
         compile group: 'com.github.pagehelper', name: 'pagehelper-spring-boot-starter', version: '1.2.3'
         // https://mvnrepository.com/artifact/mysql/mysql-connector-java jdbc驱动
         compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.9-rc'
+        //swagger-UI
+        compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.6.1'
+        compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.6.1'
     }
 }
 
