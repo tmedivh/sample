@@ -21,6 +21,9 @@ dependencies {
     compile group: 'com.auth0', name: 'java-jwt', version: '3.4.0'
     //shiro
     compile group: 'org.apache.shiro', name: 'shiro-spring', version: '1.4.0'
+    compile group: 'org.apache.shiro', name: 'shiro-core', version: '1.4.0'
+    //工具箱
+    compile group: 'com.xiaoleilu', name: 'hutool-core', version: '3.3.2'
 }
 
 def getDbProperties = {
