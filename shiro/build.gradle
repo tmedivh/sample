@@ -24,6 +24,7 @@ dependencies {
     compile group: 'org.apache.shiro', name: 'shiro-core', version: '1.4.0'
     //工具箱
     compile group: 'com.xiaoleilu', name: 'hutool-core', version: '3.3.2'
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.6'
 }
 
 def getDbProperties = {

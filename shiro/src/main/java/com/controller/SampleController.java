@@ -2,6 +2,7 @@ package com.controller;
 
 import com.exception.ShiroException;
 import com.service.UserService;
+import com.shiro.JWTToken;
 import com.utils.JWTUtil;
 import com.vo.ResponseVO;
 import com.vo.UserVO;
@@ -37,9 +38,10 @@ public class SampleController {
     }
 
     @GetMapping("/users")
-    @RequiresAuthentication
     public ResponseVO users(@RequestParam(value = "pageNum") Integer pageNum,
                             @RequestParam(value = "pageSize") Integer pageSize) {
+        Subject subject = SecurityUtils.getSubject();
+        boolean isLogin = subject.isAuthenticated();
         return ResponseVO.response().setData(userService.getUserList(pageNum, pageSize)).build();
     }
 
