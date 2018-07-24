@@ -1,20 +1,28 @@
 package com.shiro;
 
+import com.alibaba.fastjson.JSON;
+import com.utils.JWTUtil;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.session.Session;
+import org.apache.shiro.session.mgt.SessionKey;
+import org.apache.shiro.subject.Subject;
+import org.apache.shiro.subject.SubjectContext;
+import org.apache.shiro.subject.support.DefaultSubjectContext;
 import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.shiro.web.session.mgt.WebSessionKey;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Map;
 
 public class JWTFilter extends BasicHttpAuthenticationFilter {
-
-    private Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
     /**
      * 判断用户是否想要登入。
@@ -27,18 +35,32 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
         return authorization != null;
     }
 
-    /**
-     *
-     */
     @Override
-    protected boolean executeLogin(ServletRequest request, ServletResponse response) throws Exception {
+    protected boolean executeLogin(ServletRequest request, ServletResponse response) {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         String authorization = httpServletRequest.getHeader("token");
-
-        JWTToken token = new JWTToken(authorization);
-        // 提交给realm进行登入，如果错误他会抛出异常并被捕获
-        getSubject(request, response).login(token);
-        // 如果没有抛出异常则代表登入成功，返回true
+        if (null == authorization) {
+            return false;
+        }
+        String sessionId = JWTUtil.getSessionId(authorization);
+        if (sessionId == null) {
+            throw new AuthenticationException("token invalid");
+        }
+        /**
+         * 获取token中的sessionId
+         * 通过sessionId获取session对象
+         * 如果根据sessionId获取不到session对象,表示用户未登陆,或token失效
+         */
+        SessionKey key = new WebSessionKey(sessionId, request, response);
+        Session session = SecurityUtils.getSecurityManager().getSession(key);
+        if (session == null) {
+            return false;
+        } else {
+            /**
+             * 认证token。这样就可以使用@RequiresAuthentication或者subject.isAuthenticated()
+             */
+            getSubject(request, response).login(new JWTToken(authorization));
+        }
         return true;
     }
 
@@ -57,39 +79,30 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
             try {
                 executeLogin(request, response);
             } catch (Exception e) {
-                response401(request, response);
+                responseWrit(response);
             }
         }
         return true;
     }
 
-    /**
-     * 对跨域提供支持
-     */
-    @Override
-    protected boolean preHandle(ServletRequest request, ServletResponse response) throws Exception {
-        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+    private void responseWrit(ServletResponse response) {
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
-        httpServletResponse.setHeader("Access-control-Allow-Origin", httpServletRequest.getHeader("Origin"));
-        httpServletResponse.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS,PUT,DELETE");
-        httpServletResponse.setHeader("Access-Control-Allow-Headers", httpServletRequest.getHeader("Access-Control-Request-Headers"));
-        // 跨域时会首先发送一个option请求，这里我们给option请求直接返回正常状态
-        if (httpServletRequest.getMethod().equals(RequestMethod.OPTIONS.name())) {
-            httpServletResponse.setStatus(HttpStatus.OK.value());
-            return false;
-        }
-        return super.preHandle(request, response);
-    }
-
-    /**
-     * 将非法请求跳转到 /401
-     */
-    private void response401(ServletRequest req, ServletResponse resp) {
+        httpServletResponse.setCharacterEncoding("UTF-8");
+        httpServletResponse.setContentType("application/json; charset=utf-8");
+        PrintWriter out = null;
+        Map<String, Object> resp = new HashMap<>();
+        resp.put("code", HttpStatus.UNAUTHORIZED.value());
+        resp.put("msg", HttpStatus.UNAUTHORIZED);
+        resp.put("data", "");
         try {
-            HttpServletResponse httpServletResponse = (HttpServletResponse) resp;
-            httpServletResponse.sendRedirect("/401");
+            out = response.getWriter();
+            out.append(JSON.toJSONString(resp));
         } catch (IOException e) {
-            LOGGER.error(e.getMessage());
+            e.printStackTrace();
+        } finally {
+            if (out != null) {
+                out.close();
+            }
         }
     }
 }

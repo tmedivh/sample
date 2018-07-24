@@ -47,8 +47,8 @@ public class ExceptionInterceptor {
      */
     private Map<String, Object> resultMap(int status_code, String message, Object data) {
         Map<String, Object> result = new HashMap<>();
-        result.put("status_code", status_code);
-        result.put("message", message);
+        result.put("code", status_code);
+        result.put("msg", message);
         result.put("data", data);
         return result;
     }
