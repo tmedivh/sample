@@ -5,12 +5,16 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.mapper.UserInfoMapper;
 import com.model.UserInfo;
+import com.vo.ResponseVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import tk.mybatis.mapper.entity.Example;
+
+import java.util.List;
 
 /**
  * Copyright (C), 2011-2018 温州贷
@@ -28,9 +32,12 @@ public class SampleController {
     @GetMapping
     @Log
     public Object test() {
+        Example example = new Example(UserInfo.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("name");
         PageHelper.startPage(1, 15);
-        throw new RuntimeException("12312");
-        //return new PageInfo<>(userInfoMapper.selectAll());
+        List<UserInfo> userInfos = userInfoMapper.selectByExample(example);
+        return ResponseVO.response().setData(new PageInfo<>(userInfos)).build();
     }
 
     @PutMapping("/update")

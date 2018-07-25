@@ -18,6 +18,7 @@ dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: '1.5.9.RELEASE'
     compile group: 'com.alibaba', name: 'fastjson', version: '1.2.30'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-redis', version: '1.5.9.RELEASE'
+
 }
 
 def getDbProperties = {

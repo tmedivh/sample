@@ -13,14 +13,14 @@ public class ResponseVO implements Serializable {
     private static final long serialVersionUID = -8145865776285690954L;
     private static final int DEFAULT_STATUS_CODE = 200;
     private static final String DEFAULT_MESSAGE = "success";
-    private int status_code;
-    private String message;
+    private int code;
+    private String msg;
     private Object data;
 
     private ResponseVO(int status_code, String message, Object data) {
         super();
-        this.status_code = status_code;
-        this.message = message;
+        this.code = status_code;
+        this.msg = message;
         this.data = data;
     }
 
@@ -32,20 +32,20 @@ public class ResponseVO implements Serializable {
         return new ResponseVOBuilder(status_code, message);
     }
 
-    public int getStatus_code() {
-        return status_code;
+    public int getCode() {
+        return code;
     }
 
-    public void setStatus_code(int status_code) {
-        this.status_code = status_code;
+    public void setCode(int status_code) {
+        this.code = status_code;
     }
 
-    public String getMessage() {
-        return message;
+    public String getMsg() {
+        return msg;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setMsg(String message) {
+        this.msg = message;
     }
 
     public Object getData() {
@@ -57,8 +57,8 @@ public class ResponseVO implements Serializable {
     }
 
     public static class ResponseVOBuilder {
-        private int status_code = DEFAULT_STATUS_CODE;
-        private String message = DEFAULT_MESSAGE;
+        private int code = DEFAULT_STATUS_CODE;
+        private String msg = DEFAULT_MESSAGE;
         private Object data;
 
         public ResponseVOBuilder() {
@@ -67,17 +67,17 @@ public class ResponseVO implements Serializable {
 
         public ResponseVOBuilder(int status_code, String message) {
             super();
-            this.status_code = status_code;
-            this.message = message;
+            this.code = status_code;
+            this.msg = message;
         }
 
         public ResponseVOBuilder setStatus_code(int status_code) {
-            this.status_code = status_code;
+            this.code = status_code;
             return this;
         }
 
         public ResponseVOBuilder setMessage(String message) {
-            this.message = message;
+            this.msg = message;
             return this;
         }
 
@@ -87,15 +87,15 @@ public class ResponseVO implements Serializable {
         }
 
         public ResponseVO build() {
-            return new ResponseVO(status_code, message, data);
+            return new ResponseVO(code, msg, data);
         }
     }
 
     @Override
     public String toString() {
         return "ResponseVO{" +
-                "status_code=" + status_code +
-                ", message='" + message + '\'' +
+                "status_code=" + code +
+                ", message='" + msg + '\'' +
                 ", data=" + data +
                 '}';
     }

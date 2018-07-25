@@ -11,8 +11,8 @@ import java.util.UUID;
 /**
  * 切面日志,主要保存log注解标注的接口日志
  */
-@Aspect
-@Component
+//@Aspect
+//@Component
 public class LogAspect {
 
     //获取log主键标示,用于更新日志结果
