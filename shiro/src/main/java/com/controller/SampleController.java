@@ -38,6 +38,7 @@ public class SampleController {
         if (userVO.getPass().equals(pass)) {
             Session session = getSubject().getSession(true);
             String jwt = JWTUtil.sign(name, session.getId().toString(), pass);
+            //
             session.setAttribute(AUTHORIZATION, jwt);
             return ResponseVO.response().setData(jwt).build();
         } else {
